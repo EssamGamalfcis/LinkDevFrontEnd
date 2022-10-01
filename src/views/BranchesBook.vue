@@ -6,9 +6,9 @@ table,
 td {
   text-align: left !important;
 }
-.p-datatable-emptymessage{
-      position: relative;
-    right: -42%;
+.p-datatable-emptymessage {
+  position: relative;
+  right: -42%;
 }
 .border-danger {
   border-color: rgb(255, 0, 0) !important;
@@ -43,16 +43,21 @@ body .p-datatable .p-datatable-header {
   padding: 0 !important;
 }
 </style>
+
 <template>
   <div>
     <Toast position="top-right" />
+    <div class="col-12 mt-2" style="position: absolute">
+      <h4 class="font-weight-bold hfontsize">Book Branch</h4>
+    </div>
     <div>
       <LogOutComp />
     </div>
+
     <template>
       <div class="container mt-5">
         <div class="row mt-5">
-          <div class="col-12" style="margin-top: 14%;">
+          <div class="col-12" style="margin-top: 14%">
             <DataTable
               :value="listOfObjects"
               :paginator="true"
@@ -67,7 +72,9 @@ body .p-datatable .p-datatable-header {
               paginatorTemplate="CurrentPageReport FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink RowsPerPageDropdown"
               currentPageReportTemplate=""
             >
-              <template #empty style="margin-righ:50% !important"> No branches found </template>
+              <template #empty style="margin-righ: 50% !important">
+                No branches found
+              </template>
               <template #header>
                 <div class="float-left mb-2">
                   <span class="p-input-icon-left">
@@ -99,8 +106,20 @@ body .p-datatable .p-datatable-header {
                 bodyStyle="display: flex;"
               >
                 <template #body="slotProps">
-                  <Button label="Book" v-if="slotProps.data.canBook == true" @click="Book(slotProps.data.id)" icon="pi pi-check" class="p-button-sm"  />
-                  <Button label="Book" disabled v-if="slotProps.data.canBook == false" icon="pi pi-check" class="p-button-sm"  />
+                  <Button
+                    label="Book"
+                    v-if="slotProps.data.canBook == true"
+                    @click="Book(slotProps.data.id)"
+                    icon="pi pi-check"
+                    class="p-button-sm"
+                  />
+                  <Button
+                    label="Book"
+                    disabled
+                    v-if="slotProps.data.canBook == false"
+                    icon="pi pi-check"
+                    class="p-button-sm"
+                  />
                 </template>
               </Column>
               <template #paginatorstart>
@@ -148,7 +167,7 @@ export default {
       totalRecords: 0,
       obj: {
         branchId: 0,
-        userId : localStorage.getItem("userId")
+        userId: localStorage.getItem("userId"),
       },
       listOfObjects: [],
       error: {},
@@ -159,7 +178,16 @@ export default {
       idToDelete: 0,
     };
   },
-  components: { Calendar, InputText, DataTable, Column, Dialog, Button, Toast ,LogOutComp},
+  components: {
+    Calendar,
+    InputText,
+    DataTable,
+    Column,
+    Dialog,
+    Button,
+    Toast,
+    LogOutComp,
+  },
   methods: {
     LoadLazyData() {
       this.loading = true;
@@ -180,7 +208,8 @@ export default {
         (typeof this.lazyParams.rows != "undefined"
           ? this.lazyParams.rows
           : 0) +
-        "&userId=" + localStorage.getItem("userId") +
+        "&userId=" +
+        localStorage.getItem("userId") +
         "&gloabalText=" +
         (typeof this.lazyParams.filters != "undefined" &&
         typeof this.lazyParams.filters["global"] != "undefined" &&
@@ -207,7 +236,7 @@ export default {
           this.error = err;
         });
     },
-    
+
     OnPage(event) {
       this.lazyParams = event;
       this.LoadLazyData();
@@ -219,10 +248,7 @@ export default {
     Book(branchId) {
       this.obj.branchId = branchId;
       service
-        .PostCallService(
-           "UserBranchBooking/BookBranch",
-          this.obj
-        )
+        .PostCallService("UserBranchBooking/BookBranch", this.obj)
         .then((res) => {
           this.$toast.add({
             severity: "success",
