@@ -38,6 +38,11 @@ const router = new Router({
       component: BranchesBook
     },
     {
+      path: "/",
+      name: "Login",
+      component: Login
+    },
+    {
       path: "/Login",
       name: "Login",
       component: Login
